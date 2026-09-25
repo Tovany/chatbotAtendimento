@@ -1,0 +1,96 @@
+====================================================================
+GUIA COMPLETO DE CONFIGURAÇÃO DO SERVIDOR UBUNTU (HETZNER)
+APLICAÇÃO: BOT DE WHATSAPP (NODE.JS + PUPPETEER)
+====================================================================
+
+1. ACESSO AO SERVIDOR VIA SSH
+--------------------------------------------------------------------
+Abra o terminal do seu computador (ou VS Code) e conecte ao servidor:
+
+ssh root@IP_DO_SEU_SERVIDOR
+
+
+2. ATUALIZAÇÃO INICIAL DO SISTEMA OPERACIONAL
+--------------------------------------------------------------------
+Atualize os repositórios do Ubuntu para garantir que o sistema baixe
+as versões mais recentes dos pacotes:
+
+apt-get update && apt-get upgrade -y
+
+
+3. INSTALAÇÃO DO NODE.JS (VERSÃO 20 LTS)
+--------------------------------------------------------------------
+Adicione o repositório oficial do NodeSource e instale o Node.js v20:
+
+curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+apt-get install -y nodejs
+
+
+4. INSTALAÇÃO DAS DEPENDÊNCIAS DO CHROME/PUPPETEER (UBUNTU 24.04)
+--------------------------------------------------------------------
+Instale o conjunto completo de bibliotecas gráficas nativas necessárias
+para o navegador Chromium rodar no Linux sem o erro "Code 127" (incluindo
+o pacote de áudio atualizado libasound2t64):
+
+apt-get install -y libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libcairo2 libpango-1.0-0 libx11-xcb1 libgtk-3-0 libxshmfence1 libasound2t64
+
+
+5. ENVIAR OS ARQUIVOS DO PROJETO (NO TERMINAL DA SUA MÁQUINA LOCAL)
+--------------------------------------------------------------------
+Se você ainda não enviou os arquivos para o servidor, crie a pasta no
+servidor e faça o envio via SCP a partir da sua máquina local:
+
+# No servidor:
+mkdir -p /root/bots/bot-rafael
+
+# No seu terminal local (computador):
+scp -r main.js package.json src root@IP_DO_SERVIDOR:/root/bots/bot-rafael/
+
+
+6. INSTALAÇÃO DAS DEPENDÊNCIAS DO PROJETO (NPM)
+--------------------------------------------------------------------
+Entre na pasta do projeto dentro do servidor e instale as bibliotecas do Node:
+
+cd /root/bots/bot-rafael
+npm install
+
+
+7. PRIMEIRA EXECUÇÃO E PAREAMENTO DO WHATSAPP
+--------------------------------------------------------------------
+Execute a aplicação manualmente para visualizar o código de pareamento
+ou QR Code na tela e conectar seu número:
+
+node main.js
+
+Assim que aparecer a confirmação de que o bot está conectado ("Online"),
+aperte `Ctrl + C` para encerrar a execução temporária.
+
+
+8. GERENCIAMENTO E EXECUÇÃO CONTÍNUA EM SEGUNDO PLANO (PM2)
+--------------------------------------------------------------------
+Instale o PM2 globalmente para manter o bot funcionando 24/7, mesmo
+após você fechar o terminal:
+
+npm install -g pm2
+
+Inicie a aplicação no PM2:
+pm2 start main.js --name "bot-rafael"
+
+Configure o PM2 para salvar o estado atual e reiniciar automaticamente
+caso o servidor seja reiniciado:
+
+pm2 save
+pm2 startup
+
+(Nota: Copie e cole no terminal o comando final retornado pelo 'pm2 startup').
+
+
+9. COMANDOS RÁPIDOS DE MONITORAMENTO E MANUTENÇÃO
+--------------------------------------------------------------------
+- Ver status das aplicações:     pm2 status
+- Acompanhar logs em tempo real: pm2 logs bot-rafael
+- Reiniciar o bot:              pm2 restart bot-rafael
+- Parar o bot:                  pm2 stop bot-rafael
+- Ver uso de CPU/RAM em tempo real: htop
+- Ver espaço em disco disponível:   df -h
+====================================================================
