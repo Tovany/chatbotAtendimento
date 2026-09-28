@@ -1,3 +1,31 @@
 {
-    
+  "112128828678369@lid": {
+    "step": "finalizado",
+    "humano": false,
+    "concluido": true,
+    "ultimoEnvioBot": 1790569457887,
+    "lastInteraction": 1790569347686
+  },
+  "193085187317814@lid": {
+    "step": "humano",
+    "humano": true,
+    "concluido": true,
+    "ultimoEnvioBot": 0,
+    "lastInteraction": 1790512757408
+  },
+  "120117400699111@lid": {
+    "step": "ignorado",
+    "humano": true,
+    "concluido": true,
+    "ultimoEnvioBot": 0,
+    "lastInteraction": 1790513000301
+  },
+  "83151003062341@lid": {
+    "step": "processando",
+    "humano": false,
+    "concluido": false,
+    "ultimoEnvioBot": 1790513182906,
+    "lastInteraction": 1790513194042,
+    "cidade": "Cametá"
+  }
 }

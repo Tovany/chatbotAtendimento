@@ -221,21 +221,6 @@ client.on('message_create', async (msg) => {
                 const comando = args[0].toLowerCase();
                 const chatDestino = msg.fromMe ? msg.to : msg.from;
 
-                if (comando === '!reset') {
-                    if (args.length < 2) {
-                        await client.sendMessage(chatDestino, '⚠️ Uso: !reset 55919XXXXXXX');
-                        return;
-                    }
-                    let alvo = args[1].replace(/\D/g, '') + '@c.us';
-                    if (userStates[alvo]) {
-                        delete userStates[alvo];
-                        salvarDados();
-                        await client.sendMessage(chatDestino, `✅ Histórico de ${args[1]} apagado.`);
-                    } else {
-                        await client.sendMessage(chatDestino, `⚠️ Número não encontrado.`);
-                    }
-                    return;
-                }
 
                 if (comando === '!status') {
                     const ramTotal = (os.totalmem() / 1024 / 1024).toFixed(0);
@@ -249,6 +234,29 @@ client.on('message_create', async (msg) => {
                     await client.sendMessage(chatDestino, relatorio);
                     return; 
                 }
+
+                // 🛠️ NOVO COMANDO: TESTE DE FLUXO
+                if (comando === '!fluxo') {
+                    let chat = null;
+                    try { chat = await msg.getChat(); } catch(e) {}
+
+                    // Força o reset do seu estado para destrancar as proteções do bot
+                    userStates[chatDestino] = {
+                        step: 'processando',
+                        humano: false, 
+                        concluido: false,
+                        ultimoEnvioBot: Date.now(),
+                        lastInteraction: Date.now()
+                    };
+                    salvarDados();
+
+                    await client.sendMessage(chatDestino, "🛠️ *Modo de Teste ativado.* Disparando o fluxo de mídias para você agora...");
+                    
+                    // Puxa o gatilho da função principal direcionando para o seu chat
+                    iniciarFluxo(chatDestino, chat);
+                    return;
+                }
+
             } catch (errAdmin) {
                 log('ERRO', `Erro no comando admin: ${errAdmin.message}`);
             }
