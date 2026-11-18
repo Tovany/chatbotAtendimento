@@ -34,6 +34,10 @@ o pacote de áudio atualizado libasound2t64):
 
 apt-get install -y libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libcairo2 libpango-1.0-0 libx11-xcb1 libgtk-3-0 libxshmfence1 libasound2t64
 
+4.1 INSTALAÇÃO DE ALGO
+apt-get update && apt-get install -y libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libcairo2 libpango-1.0-0 libasound2 libpangocairo-1.0-0 libxshmfence1 libgtk-3-0 fonts-liberation
+
+
 
 5. ENVIAR OS ARQUIVOS DO PROJETO (NO TERMINAL DA SUA MÁQUINA LOCAL)
 --------------------------------------------------------------------
